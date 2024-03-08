@@ -35,7 +35,7 @@ class FeedbackService(
     fun addFeedback(feedback: Feedback): Feedback {
         logger.info("Feedback received: $feedback")
         try {
-            db.update("insert into Feedback values (text, rating)",
+            db.update("insert into Feedback (text, rating) values (?, ?)",
                 feedback.text,
                 feedback.rating
             )

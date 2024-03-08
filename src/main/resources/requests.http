@@ -1,0 +1,25 @@
+### Fetch Feedback
+GET http://localhost:8080/
+
+### Add Feedback
+POST http://localhost:8080/addFeedback
+Content-Type: application/json
+
+{
+    "id": 1,
+    "text": "This is a feedback",
+    "rating": 10
+}
+
+### Update Feedback
+PUT http://localhost:8080/updateFeedback/1
+Content-Type: application/json
+
+{
+    "id": 1,
+    "text": "This is a updated feedback",
+    "rating": 9
+}
+
+### Delete Feedback
+DELETE http://localhost:8080/deleteFeedback/1
