@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS feedback (
+  id SERIAL PRIMARY KEY,
+  text VARCHAR(100),
+  rating INTEGER
+);
