@@ -5,3 +5,4 @@
 4. `sdk list java`
 5. `sdk use java 17.0.7-oracle`
 6. `mvn clean install` to build the project.
+7. ngrok http <url> 
