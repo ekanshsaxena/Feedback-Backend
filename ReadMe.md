@@ -6,3 +6,4 @@
 5. `sdk use java 17.0.7-oracle`
 6. `mvn clean install` to build the project.
 7. ngrok http <url> 
+8. @CrossOrigin annotation in the controller class, to allow the request from the frontend.
