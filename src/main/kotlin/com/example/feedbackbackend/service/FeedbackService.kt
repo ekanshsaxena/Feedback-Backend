@@ -3,7 +3,10 @@ package com.example.feedbackbackend.service
 import com.example.feedbackbackend.model.Feedback
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.support.GeneratedKeyHolder
+import org.springframework.jdbc.support.KeyHolder
 import org.springframework.stereotype.Service
 
 @Service
@@ -34,17 +37,25 @@ class FeedbackService(
 
     fun addFeedback(feedback: Feedback): Feedback {
         logger.info("Feedback received: $feedback")
+        val keyHolder: KeyHolder = GeneratedKeyHolder()
+        val updatedFeedback: Feedback
         try {
-            db.update("insert into Feedback (text, rating) values (?, ?)",
-                feedback.text,
-                feedback.rating
-            )
-        }catch(ex: Exception){
+            db.update({ connection ->
+                val ps = connection.prepareStatement(
+                    "insert into Feedback (text, rating) values (?, ?)",
+                    arrayOf("id")
+                )
+                ps.setString(1, feedback.text)
+                ps.setInt(2, feedback.rating)
+                ps
+            }, keyHolder)
+            updatedFeedback = feedback.copy(id = keyHolder.key?.toInt() ?: 0)
+        } catch (ex: DataIntegrityViolationException) {
             logger.error("Error Occurred while adding feedback: $ex")
             throw ex
         }
-        logger.info("Feedback added: $feedback")
-        return feedback
+        logger.info("Feedback added: $updatedFeedback")
+        return updatedFeedback
     }
 
     fun deleteFeedback(id: Int) {
